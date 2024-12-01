@@ -407,7 +407,7 @@ def search_hyper_params(trial : optuna.trial):
         # args.beta = trial.suggest_float("beta", 0.0, 5.0, step = 0.1)
         args.beta = trial.suggest_float("beta", 1.0, 10.0, step=1.0)
 
-    return ULA(args=args, trial_id=trial.number)
+    return COIN(args=args, trial_id=trial.number)
 
 
 def sim(z1, z2, method='cos'):
@@ -440,7 +440,7 @@ class ClusterAssignment(nn.Module):
         power = float(self.alpha + 1) / 2
         numerator = numerator ** power
         return numerator / torch.sum(numerator, dim=1, keepdim=True)
-def ULA(args, trial_id=0):
+def COIN(args, trial_id=0):
     global data, U, Lamb, C, device, study_name
 
 
@@ -691,7 +691,7 @@ if __name__ == '__main__':
         data.edge_index = to_undirected(data.edge_index)
 
     U, Lamb, C = None, None, None
-    if osp.exists(f'~/code/LAC/data/npy/{args.dataset}_sorted_eigvecs.npy'):
+    if osp.exists(f'~/code/COIN/data/npy/{args.dataset}_sorted_eigvecs.npy'):
         U = np.load(f"~/code/data/npy/{args.dataset}_sorted_eigvecs.npy")
     if osp.exists(f'~/code/data/npy/{args.dataset}_sorted_eigvals.npy'):
         Lamb = np.load(f"~/code/data/npy/{args.dataset}_sorted_eigvals.npy")
@@ -776,4 +776,4 @@ if __name__ == '__main__':
         print("best params", study.best_params)
         print("best val_acc", study.best_value)
     else: 
-        ULA(args=args)
+        COIN(args=args)
