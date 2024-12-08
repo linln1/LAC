@@ -39,11 +39,11 @@ Code is tested in ***\*Python 3.8.10\****. You can prepare the environment for r
 
 
 
-\```bash
+```bash
 
 pip install -r requirements.txt
 
-\```
+```
 
 
 
@@ -57,11 +57,11 @@ pip install -r requirements.txt
 
 Before you runing COIN.py on dataset ```$ds``` , you should make directories for keeping output by using the following command:
 
-\```bash
+```bash
 
 mkdir -p ./outputs/${ds}
 
-\```
+```
 
 
 
@@ -71,11 +71,11 @@ This step is to prepare the data and reuse the results of the decomposition of t
 
 
 
-\```bash
+```bash
 
 nohup python decompose_A_X.py --dataset $ds
 
-\```
+```
 
 
 
@@ -85,17 +85,17 @@ nohup python decompose_A_X.py --dataset $ds
 
 
 
-Next, you can search hyperparameters of COIN on the GPU ```$gpu_id``` with or withoud mask mechanism by using the following commands.
+Next, you can search hyperparameters of COIN on the GPU `$gpu_id` with or without the mask mechanism by using the following commands:
 
 
 
-\```bash
+```bash
 
-CUDA_VISIBLE_DEVICES=$gpu_id, nohup python COIN.py --dataset $ds --use_mask_ratio --botune &> ./outputs/${ds}/ULA_mask.out&
+CUDA_VISIBLE_DEVICES=$gpu_id nohup python COIN.py --dataset $ds --use_mask_ratio --botune &> ./outputs/${ds}/ULA_mask.out&
 
-CUDA_VISIBLE_DEVICES=$gpu_id, nohup python COIN.py --dataset $ds --botune &> ./outputs/${ds}/ULA_nomask.out&
+CUDA_VISIBLE_DEVICES=$gpu_id nohup python COIN.py --dataset $ds --botune &> ./outputs/${ds}/ULA_nomask.out&
 
-\```
+```
 
 
 
@@ -107,27 +107,19 @@ For example, if you want to run the COIN on Cora dataset, you can use the follow
 
 
 
-\```bash
+```bash
 
-CUDA_VISIBLE_DEVICES=$gpu_id, nohup python COIN.py --dataset Cora --lr1 5e-4 --lr2 5e-4 --wd 1e-5 --hid_dim 256 --proj_dim 256\ 
+CUDA_VISIBLE_DEVICES=$gpu_id nohup python COIN.py --dataset Cora --lr1 5e-4 --lr2 5e-4 --wd 1e-5 --hid_dim 256 --proj_dim 256 \
+                         --use_mask_ratio --mask_ratio 0.15 --alpha 0.55 --gamma 0.55 \
+                         --tau 0.6  --sim_method exp \
+                         --num_epochs 300 --early_stop --patience 10 &> ./outputs/Cora/COIN.out&  
 
-​                         --use_mask_ratio --mask_ratio 0.15 --alpha 0.55 --gamma 0.55 \ 
+CUDA_VISIBLE_DEVICES=$gpu_id nohup python COIN.py --dataset CiteSeer --lr1 5e-4 --lr2 5e-4 --wd 1e-5 --hid_dim 256 --proj_dim 128 \
+                         --alpha 0.7 --gamma 0.65 \
+                         --tau 0.9  --encoder_layer 2 \
+                         --num_epochs 300 --early_stop --patience 10 &> ./outputs/CiteSeer/COIN.out&
 
-​                         --tau 0.6  --sim_method exp \
-
-​                         --num_epochs 300 --early_stop --patience 10 &> ./outputs/Cora/COIN.out&  
-
-
-
-CUDA_VISIBLE_DEVICES=$gpu_id, nohup python COIN.py --dataset CiteSeer --lr1 5e-4 --lr2 5e-4 --wd 1e-5 --hid_dim 256 --proj_dim 128\ 
-
-​                         --alpha 0.7 --gamma 0.65 \ 
-
-​                         --tau 0.9  --encoder_layer 2 \ 
-
-​                         --num_epochs 300 --early_stop --patience 10 &> ./outputs/CiteSeer/COIN.out&  
-
-\```
+```
 
 
 
